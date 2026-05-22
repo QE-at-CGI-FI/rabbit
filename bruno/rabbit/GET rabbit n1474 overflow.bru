@@ -1,0 +1,26 @@
+meta {
+  name: GET rabbit(1474) overflow → 422
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:8000/rabbit/1474
+  body: none
+  auth: inherit
+}
+
+headers {
+  X-API-Key: aaa
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+tests {
+  test("one above max returns 422", function() {
+    expect(res.status).to.equal(422);
+  });
+}

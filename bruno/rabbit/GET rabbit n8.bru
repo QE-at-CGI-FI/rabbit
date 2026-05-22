@@ -1,0 +1,30 @@
+meta {
+  name: GET rabbit(8) → 34
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8000/rabbit/8
+  body: none
+  auth: inherit
+}
+
+headers {
+  X-API-Key: aaa
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("result is 34", function() {
+    expect(res.body.result).to.equal(34);
+  });
+}

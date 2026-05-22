@@ -1,0 +1,26 @@
+meta {
+  name: GET rabbit(0) → 422
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8000/rabbit/0
+  body: none
+  auth: inherit
+}
+
+headers {
+  X-API-Key: aaa
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+tests {
+  test("zero input returns 422", function() {
+    expect(res.status).to.equal(422);
+  });
+}

@@ -1,0 +1,62 @@
+name: Publish API docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate site
+        run: |
+          mkdir -p site
+          python -c "
+          import json
+          from main import app
+          with open('site/openapi.json', 'w') as f:
+              json.dump(app.openapi(), f, indent=2)
+          "
+          cat > site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Rabbit API</title>
+              <meta charset="utf-8"/>
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+              <redoc spec-url='openapi.json'></redoc>
+              <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
+            </body>
+          </html>
+          EOF
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
