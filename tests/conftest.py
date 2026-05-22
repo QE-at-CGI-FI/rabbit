@@ -1,4 +1,5 @@
-"""Shared fixtures: starts a dedicated test server on port 8001."""
+"""Shared fixtures: starts a local test server unless BASE_URL is set."""
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -7,12 +8,17 @@ import pytest
 import requests
 
 PROJECT_ROOT = Path(__file__).parent.parent
-BASE_URL = "http://localhost:8001"
+BASE_URL = os.environ.get("BASE_URL", "http://localhost:8001")
+_MANAGED = BASE_URL.startswith(("http://localhost", "http://127.0.0.1"))
 
 
 @pytest.fixture(scope="session", autouse=True)
 def server():
-    """Start a fresh uvicorn process on port 8001 for the test session."""
+    """Start a local uvicorn process when testing locally; skip when BASE_URL points elsewhere."""
+    if not _MANAGED:
+        yield
+        return
+
     proc = subprocess.Popen(
         [str(PROJECT_ROOT / ".venv/bin/uvicorn"), "main:app", "--port", "8001"],
         cwd=PROJECT_ROOT,

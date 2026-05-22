@@ -1,41 +1,45 @@
 # Rabbit API — REST Client samples
 # Sequence: rabbit(n) = 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...
+# Switch target by changing @baseUrl below:
+
+@baseUrl = http://localhost:8000
+# @baseUrl = https://api-production-d3790.up.railway.app
 
 ### rabbit(1) → 1
-GET http://localhost:8000/rabbit/1
+GET {{baseUrl}}/rabbit/1
 X-API-Key: aaa
 
 ### rabbit(6) → 13
-GET http://localhost:8000/rabbit/6
+GET {{baseUrl}}/rabbit/6
 X-API-Key: aaa
 
 ### rabbit(8) → 34
-GET http://localhost:8000/rabbit/8
+GET {{baseUrl}}/rabbit/8
 X-API-Key: aaa
 
 ### rabbit(10) → 89
-GET http://localhost:8000/rabbit/10
+GET {{baseUrl}}/rabbit/10
 X-API-Key: aaa
 
 ### n=0 should return 422
-GET http://localhost:8000/rabbit/0
+GET {{baseUrl}}/rabbit/0
 X-API-Key: aaa
 
 ### n=-1 should return 422
-GET http://localhost:8000/rabbit/-1
+GET {{baseUrl}}/rabbit/-1
 X-API-Key: aaa
 
 ### n=1473 max valid → 200
-GET http://localhost:8000/rabbit/1473
+GET {{baseUrl}}/rabbit/1473
 X-API-Key: aaa
 
 ### n=1474 one above max → 422
-GET http://localhost:8000/rabbit/1474
+GET {{baseUrl}}/rabbit/1474
 X-API-Key: aaa
 
 ### missing key should return 401
-GET http://localhost:8000/rabbit/1
+GET {{baseUrl}}/rabbit/1
 
 ### wrong key should return 401
-GET http://localhost:8000/rabbit/1
+GET {{baseUrl}}/rabbit/1
 X-API-Key: wrong

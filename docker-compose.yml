@@ -1,0 +1,16 @@
+services:
+  rabbit:
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbit
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - RABBIT_SERVICE_URL=http://rabbit:8080
+    depends_on:
+      - rabbit

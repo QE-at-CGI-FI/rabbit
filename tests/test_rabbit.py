@@ -1,8 +1,10 @@
 """Tests for GET /rabbit/{n}."""
+import os
+
 import pytest
 import requests
 
-BASE_URL = "http://localhost:8001"
+from conftest import BASE_URL
 API_KEY = "aaa"
 AUTH = {"X-API-Key": API_KEY}
 

@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import os
-import subprocess
-import sys
 from pathlib import Path
 
+import requests
 from fastapi import FastAPI, HTTPException, Security
 from fastapi.responses import HTMLResponse
 from fastapi.security import APIKeyHeader
@@ -19,6 +18,7 @@ app = FastAPI(
 
 
 _API_KEY = os.environ.get("API_SECRET", "aaa")
+_RABBIT_SERVICE_URL = os.environ.get("RABBIT_SERVICE_URL", "http://localhost:8080")
 _api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
@@ -201,7 +201,7 @@ def rabbit_ui() -> HTMLResponse:
       <div class="field-group">
         <div>
           <label for="n-input">Input</label>
-          <input type="number" id="n-input" min="1" max="1473" value="7" placeholder="Enter a positive integer" />
+          <input type="number" id="n-input" min="1" max="1473" placeholder="Enter a positive integer" />
         </div>
         <button id="run-btn" onclick="runRabbit()">Ask the rabbit</button>
         <div>
@@ -280,12 +280,9 @@ def rabbit(n: int, _: None = Security(require_api_key)) -> RabbitResult:
         raise HTTPException(status_code=422, detail="n must be a positive integer.")
     if n > 1473:
         raise HTTPException(status_code=422, detail="n is too large; maximum supported value is 1473.")
-    proc = subprocess.run(
-        [sys.executable, str(_RABBIT_SCRIPT), str(n)],
-        capture_output=True,
-        text=True,
-        timeout=10,
-    )
-    if proc.returncode != 0:
-        raise HTTPException(status_code=500, detail=proc.stderr.strip())
-    return RabbitResult(input=n, result=int(proc.stdout.strip()))
+    try:
+        resp = requests.get(f"{_RABBIT_SERVICE_URL}/compute/{n}", timeout=10)
+        resp.raise_for_status()
+    except requests.RequestException as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    return RabbitResult(input=n, result=resp.json()["result"])
