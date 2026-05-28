@@ -110,6 +110,8 @@ Default-all asserting for responses
 Generative, with packaged asserts (properties)
 
 - schemathesis
+- restler https://github.com/microsoft/restler-fuzzer
+- evomaster https://github.com/WebFuzzing/evomaster
 
 Setting up scope of testing by mocking
 
