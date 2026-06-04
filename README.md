@@ -6,9 +6,9 @@ An exploratory API testing exercise. You get information through reference (some
 
 Deployed to Railway: two containers, one project
 
-API + UI: https://api-production-d3790.up.railway.app
-
 UI: https://api-production-d3790.up.railway.app/rabbit-ui
+
+API: https://api-production-d3790.up.railway.app (requires secret)
 
 Docs: https://api-production-d3790.up.railway.app/docs
 
