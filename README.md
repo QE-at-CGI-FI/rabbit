@@ -97,7 +97,7 @@ If you installed schemathesis
 
 - The UI in 100% does not fix screen of size that feels relevant. Font choice could change, but should it?
 
-- What risks would you attribute the the architectural layers? Did you end up naming 1) logic 2) API 3) UI 4) Browser 5) Container? Knowing this, would you target your automated tests to leave behind differently?
+- What risks would you attribute the the architectural layers? Did you end up naming 1) logic 2) API 3) UI 4) Browser 5) Container 6) Hosting? Knowing this, would you target your automated tests to leave behind differently?
 
 ## Possible, even recommended tools
 
