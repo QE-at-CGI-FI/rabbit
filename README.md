@@ -87,6 +87,18 @@ Property-based testing against the OpenAPI spec with Schemathesis:
 If you installed schemathesis
 `st run http://localhost:8000/openapi.json --header "X-API-Key: aaa" --report=junit`
 
+# Bugs and insights
+
+- If you run rabbit.py natively on windows, it fails. It does not fail when dockerized to run in this deployment. Do you understand why?
+
+- You could say the application has off by one error. But the main requirement driving this app is the shape of the code. Would there be a way to preserve the shape and address the off by one error?
+
+- In Chrome, the text field to enter values shows up/down arrows to change the value that aren't shown in Safari. Does this matter?
+
+- The UI in 100% does not fix screen of size that feels relevant. Font choice could change, but should it?
+
+- What risks would you attribute the the architectural layers? Did you end up naming 1) logic 2) API 3) UI 4) Browser 5) Container? Knowing this, would you target your automated tests to leave behind differently?
+
 ## Possible, even recommended tools
 
 Sending requests, looking at responses
